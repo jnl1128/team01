@@ -18,7 +18,8 @@ int Sum(Product* arr) {
     for (p = arr; p < &arr[3]; p++) {
         sum += p->cost;
     }
-   
+
+    cout << "total: " << sum << endl;
     return sum;
 }
 
@@ -29,8 +30,9 @@ void showOrder(Product* arr) {
         cout << p->name << endl;
     }
 }
+
 int main() {
-	auto scene = Scene::create("easy mode", "images/background.png");
+auto scene = Scene::create("easy mode", "images/background.png");
 	auto B100 = Object::create("images/100won.png", scene,500, 500);
 	auto buzzer = Object::create("images/buzzer.png", scene, 600, 500);
 	bool done = false;
