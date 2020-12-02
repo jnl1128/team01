@@ -37,19 +37,6 @@ int pick_cash(ObjectPtr object, int num) {
 	return return_value;
 }
 
-int getPrice(int bread_type) {
-	int price = 0;
-	if (bread_type / 5 == 0) {
-		price = 500 + bread_type * 100; // 0:500, 1:600, 2:700; 3: 800, 4:900
-	}
-	else if (bread_type / 5 == 1) {
-		price = bread_type * 100 + 1000;// 5: 1500, 6:1600, 7: 1700, 8: 1800, 9:1900
-	}
-	else {
-		price = bread_type * 100 + 200;//10:1200; 11: 1300; 12: 1400; 13: 1500; 14: 1600
-	}
-	return price;
-}
 
 void showingStatus(int num) {
 	string showChange = "지금은 " + to_string(num) + "원입니다.";
@@ -282,11 +269,10 @@ int main() {
 		const int iter = rand() % 3 + 1;
 		std::cout << "iter: " << iter << endl;
 		for (int i = 0; i < iter; i++) {
-			int type = rand() % 15;
-			string name = "images/빵/bread" + to_string(type) + ".png";
-			auto bread = Object::create(name, scene_game, 130 + i * 150, 200, true);
+			int type = rand() % 25;
+			auto bread = Object::create("images/빵/" + product[type].name + ".png", scene_game, 130 + i * 150, 200, true);
 			bread_image->push_back(bread);
-			bread_price->push_back(getPrice(type));
+			bread_price->push_back(product[type].price);
 		}
 
 		for (int i = 0; i < iter; i++) {
