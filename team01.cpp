@@ -1,16 +1,12 @@
-﻿#include <bangtal>
+#include <bangtal>
 #include <iostream>
 #include <vector>
 using namespace bangtal;
 using namespace std;
 
-void exchange_image(ObjectPtr object, int count) {
-	string number = "images/숫자/" + to_string(count) + ".png";
-	object->setImage(number);
-}
 
 void pick_client(ObjectPtr object) {
-	int type = rand() % 5 + 1;
+	int type = rand() % 6 + 1;
 	string client = "images/손님" + to_string(type) + ".png";
 	object->setImage(client);
 }
@@ -29,12 +25,11 @@ int pick_cash(ObjectPtr object, int num) {
 			cout << "cash: " << Vector_cash[v_num] << endl;
 			break;
 		}
-		
+
 	}
 	object->show();
 	return return_value;
 }
-
 
 int getPrice(int bread_type) {
 	int price = 0;
@@ -56,14 +51,63 @@ void showingStatus(int num) {
 }
 
 
+class Up : public Object
+{
+protected:
+	ObjectPtr temp;
+	Up(const string& image, ScenePtr scene, int x, int y, bool shown, ObjectPtr linked_object) : Object(image, scene, x, y, shown) {
+		temp = linked_object;
+	}
+
+public:
+	static ObjectPtr create(const string& image, ScenePtr scene = nullptr, int x = 0, int y = 0, bool shown = true, ObjectPtr linked_object = nullptr) {
+		auto object = ObjectPtr(new Up(image, scene, x, y, shown, linked_object));
+		Object::add(object);
+		return object;
+	}
+	virtual bool onMouse(int x, int y, MouseAction action, ObjectPtr linked_object) {
+
+		return true;
+	}
+
+};
+
+
+class Down : public Object
+{
+protected:
+	ObjectPtr temp;
+	Down(const string& image, ScenePtr scene, int x, int y, bool shown, ObjectPtr linked_object) : Object(image, scene, x, y, shown) {
+		temp = linked_object;
+	}
+
+public:
+	static ObjectPtr create(const string& image, ScenePtr scene = nullptr, int x = 0, int y = 0, bool shown = true, ObjectPtr linked_object = nullptr) {
+		auto object = ObjectPtr(new Down(image, scene, x, y, shown, linked_object));
+		Object::add(object);
+		return object;
+	}
+
+	virtual bool onMouse(int x, int y, MouseAction action, ObjectPtr linked_object) {
+
+		return true;
+
+	}
+
+};
+
+
 int main() {
 	setGameOption(GameOption::GAME_OPTION_INVENTORY_BUTTON, false);
 	setGameOption(GameOption::GAME_OPTION_ROOM_TITLE, false);
-	
+
 	/*Scene 선언부*/
 	auto scene_main = Scene::create("", "images/메인화면.png");
 	auto scene_select = Scene::create("", "images/난이도선택.png");
-	auto scene_game = Scene::create("", "images/게임화면.png");
+	auto scene_game = Scene::create("", "images/game_play.png");
+	auto scene_guide = Scene::create("", "images/게임설명판.png");
+	auto scene_menu = Scene::create("", "images/메뉴판.png");
+	
 
 	/*scene_main*/
 	auto button_start = Object::create("images/게임시작.png", scene_main, 200, 310);
@@ -77,15 +121,59 @@ int main() {
 		scene_select->enter();
 		return true;
 		});
-	
+
+	button_guide->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
+		scene_guide->enter();
+		return true;
+		});
+
+	/*scene_guide*/
+
+	auto exit_guide = Object::create("images/exit.png", scene_guide, 1100, 100);
+
+		
+	exit_guide->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
+		scene_main->enter();
+		return true;
+		});
+
+	/*scene_menu*/
+
+	auto bread_menu = Object::create("images/빵메뉴판.png", scene_menu, 115, 62);
+
+	auto bread_button = Object::create("images/빵버튼.png", scene_menu, 60, 420);
+	auto sand_button = Object::create("images/샌드버튼.png", scene_menu, 60, 350);
+	auto other_button = Object::create("images/기타버튼.png", scene_menu, 60, 270);
+	auto menu_board = Object::create("images/메뉴팻말.png", scene_menu, 454, 534);
+
+	bread_button ->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
+		bread_menu->setImage("images/빵메뉴판.png");
+		return true;
+		});
+
+	sand_button->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
+		bread_menu->setImage("images/샌드위치메뉴판.png");
+		return true;
+		});
+
+	other_button->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
+		bread_menu->setImage("images/기타메뉴판.png");
+		return true;
+		});
+
+	auto exit_menu = Object::create("images/exit.png", scene_menu, 1100, 100);
+	exit_menu->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
+		scene_game->enter();
+		return true;
+		});
 
 	/*guest*/
-	auto ano_guest = Object::create("images/익명.png", scene_game, 100, 700);
+	auto ano_guest = Object::create("images/익명.png", scene_game, 200, 600);
 	auto text_ballon = Object::create("images/말풍선.png", scene_game, 500, 450);
 
-	
 	/*cash*/
 	auto cash_image = Object::create("images/돈.png", scene_game, 500, 600);
+
 
 	/*scene_select*/
 	auto easy_select = Object::create("images/easy.png", scene_select, 400, 400);
@@ -121,7 +209,7 @@ int main() {
 			bread_image->push_back(bread);
 			bread_price->push_back(getPrice(type));
 		}
-	
+
 		for (int i = 0; i < iter; i++) {
 			total += bread_price->back();
 			bread_price->pop_back();
@@ -132,6 +220,7 @@ int main() {
 
 		return true;
 		});
+
 
 	normal_select->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
 
@@ -147,20 +236,30 @@ int main() {
 		return true;
 		});
 
-	/*cash button*/
-	auto up_for_5000 = Object::create("images/증가버튼1.png", scene_game, 1038, 318);
-	auto down_for_5000 = Object::create("images/감소버튼1.png", scene_game, 1038, 298);
-	auto up_for_1000 = Object::create("images/증가버튼1.png", scene_game, 1038, 273);
-	auto down_for_1000 = Object::create("images/감소버튼1.png", scene_game, 1038, 253);
-	auto up_for_100 = Object::create("images/증가버튼2.png", scene_game, 1090, 293);
-	auto down_for_100 = Object::create("images/감소버튼2.png", scene_game, 1090, 280);
-	auto up_for_500 = Object::create("images/증가버튼2.png", scene_game, 1090, 238);
-	auto down_for_500 = Object::create("images/감소버튼2.png", scene_game, 1090, 224);
-	auto done = Object::create("images/done.png", scene_game, 500, 500);
+
+	/*scene_game*/
+
+	auto menu_button = Object::create("images/메뉴확인.png", scene_game, 1150, 100);
+
+	menu_button ->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
+		scene_menu->enter();
+		return true;
+		});
+
+	auto up_for_5000 = Object::create("images/up_button.png", scene_game, 932, 273);
+	auto down_for_5000 = Object::create("images/down_button.png", scene_game, 932, 238);
+	auto up_for_1000 = Object::create("images/up_button.png", scene_game, 984, 273);
+	auto down_for_1000 = Object::create("images/down_button.png", scene_game, 984, 238, true);
+	auto up_for_500 = Object::create("images/up_button.png", scene_game, 1036, 273);
+	auto down_for_500 = Object::create("images/down_button.png", scene_game, 1036, 238, true);
+	auto up_for_100 = Object::create("images/up_button.png", scene_game, 1088, 273, true);
+	auto down_for_100 = Object::create("images/down_button.png", scene_game, 1088, 238, true);
+	auto done = Object::create("images/done.png", scene_game, 1040, 210);
+	auto reset = Object::create("images/reset.png", scene_game, 930, 210);
 
 
 	done->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
-		if (change == cash-total) {
+		if (change == cash - total) {
 			std::cout << "bingo" << endl;
 		}
 		else {
@@ -194,7 +293,7 @@ int main() {
 			bread_image->push_back(bread);
 			bread_price->push_back(getPrice(type));
 		}
-		
+
 		for (int i = 0; i < iter; i++) {
 			total += bread_price->back();
 			bread_price->pop_back();
@@ -248,73 +347,9 @@ int main() {
 		showingStatus(change);
 		return true;
 		});
-	bangtal::startGame(scene_main);
+
+
+
+	startGame(scene_main);
 	return 0;
 }
-
-
-/*
-class Count {
-public:
-	static int count;
-};
-int Count::count = 0;
-class Up : public Object, public Count
-{
-protected:
-	ObjectPtr temp;
-	Up(const string& image, ScenePtr scene, int x, int y, bool shown, ObjectPtr linked_object) : Object(image, scene, x, y, shown) {
-		temp = linked_object;
-	}
-
-public:
-	static ObjectPtr create(const string& image, ScenePtr scene = nullptr, int x = 0, int y = 0, bool shown = true, ObjectPtr linked_object = nullptr) {
-		auto object = ObjectPtr(new Up(image, scene, x, y, shown, linked_object));
-		Object::add(object);
-		return object;
-	}
-	virtual bool onMouse(int x, int y, MouseAction action, ObjectPtr linked_object) {
-		if (count < 9) {
-			count++;
-			exchange_image(temp, count);
-		}
-		return true;
-	}
-
-};
-
-
-class Down : public Object, public Count
-{
-protected:
-	ObjectPtr temp;
-	Down(const string& image, ScenePtr scene, int x, int y, bool shown, ObjectPtr linked_object) : Object(image, scene, x, y, shown) {
-		temp = linked_object;
-	}
-
-public:
-	static ObjectPtr create(const string& image, ScenePtr scene = nullptr, int x = 0, int y = 0, bool shown = true, ObjectPtr linked_object = nullptr) {
-		auto object = ObjectPtr(new Down(image, scene, x, y, shown, linked_object));
-		Object::add(object);
-		return object;
-	}
-
-	virtual bool onMouse(int x, int y, MouseAction action, ObjectPtr linked_object) {
-		if (count > 0) {
-			count--;
-			exchange_image(temp, count);
-		}
-
-		return true;
-
-	}
-
-};
-*/
-
-/*scene_game
-auto count_for_5000 = Object::create("images/숫자/0.png", scene_game, 830, 630);
-auto count_for_1000 = Object::create("images/숫자/0.png", scene_game, 950, 630);
-auto count_for_500 = Object::create("images/숫자/0.png", scene_game, 1080, 630);
-auto count_for_100 = Object::create("images/숫자/0.png", scene_game, 1195, 630);
-*/
