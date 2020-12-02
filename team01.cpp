@@ -1,4 +1,4 @@
-﻿#include <bangtal>
+#include <bangtal>
 #include <iostream>
 #include <vector>
 using namespace bangtal;
@@ -9,6 +9,10 @@ struct Product {
 	string name;
 	int price;
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> e9cb5263e0980d0e3c9c21fa63db7474ad1b965e
 
 void pick_client(ObjectPtr object) {
 	int type = rand() % 6 + 1;
@@ -35,6 +39,7 @@ int pick_cash(ObjectPtr object, int num) {
 	object->show();
 	return return_value;
 }
+<<<<<<< HEAD
 /*
 int getPrice(int bread_type) {
 	int price = 0;
@@ -43,6 +48,10 @@ int getPrice(int bread_type) {
 	return price;
 }
 */
+=======
+
+
+>>>>>>> e9cb5263e0980d0e3c9c21fa63db7474ad1b965e
 void showingStatus(int num) {
 	string showChange = "지금은 " + to_string(num) + "원입니다.";
 	showMessage(showChange);
@@ -51,7 +60,12 @@ void showingStatus(int num) {
 
 
 int main() {
+<<<<<<< HEAD
 	struct Product product[25]{
+=======
+
+	 struct Product product[25]{
+>>>>>>> e9cb5263e0980d0e3c9c21fa63db7474ad1b965e
 
 		{"bread0", 1600},
 		{"bread1", 1500},
@@ -81,6 +95,11 @@ int main() {
 
 
 	};
+<<<<<<< HEAD
+=======
+	
+
+>>>>>>> e9cb5263e0980d0e3c9c21fa63db7474ad1b965e
 	setGameOption(GameOption::GAME_OPTION_INVENTORY_BUTTON, false);
 	setGameOption(GameOption::GAME_OPTION_ROOM_TITLE, false);
 
@@ -90,7 +109,11 @@ int main() {
 	auto scene_game = Scene::create("", "images/game_play.png");
 	auto scene_guide = Scene::create("", "images/게임설명판.png");
 	auto scene_menu = Scene::create("", "images/메뉴판.png");
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> e9cb5263e0980d0e3c9c21fa63db7474ad1b965e
 
 	/*scene_main*/
 	auto button_start = Object::create("images/게임시작.png", scene_main, 200, 310);
@@ -111,7 +134,14 @@ int main() {
 		});
 
 	/*scene_guide*/
+<<<<<<< HEAD
 	auto exit_guide = Object::create("images/exit.png", scene_guide, 1100, 100);
+=======
+
+	auto exit_guide = Object::create("images/exit.png", scene_guide, 1100, 100);
+
+		
+>>>>>>> e9cb5263e0980d0e3c9c21fa63db7474ad1b965e
 	exit_guide->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
 		scene_main->enter();
 		return true;
@@ -126,7 +156,11 @@ int main() {
 	auto other_button = Object::create("images/기타버튼.png", scene_menu, 60, 270);
 	auto menu_board = Object::create("images/메뉴팻말.png", scene_menu, 454, 534);
 
+<<<<<<< HEAD
 	bread_button->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
+=======
+	bread_button ->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
+>>>>>>> e9cb5263e0980d0e3c9c21fa63db7474ad1b965e
 		bread_menu->setImage("images/빵메뉴판.png");
 		return true;
 		});
@@ -172,6 +206,7 @@ int main() {
 	int cash = 0; //손님이 내는 돈
 	int change = 0; //거스름돈
 	int total = 0; //내야하는 돈(빵 값)
+
 	vector <int> bread_price[3];
 	vector <ObjectPtr> bread_image[3];
 
@@ -187,14 +222,22 @@ int main() {
 		//빵개수 랜덤
 		const int iter = rand() % 3 + 1;
 
+
 		//빵 15개 종류 중 랜덤하게 받은 개수만큼 vector에 넣어줌
 		for (int i = 0; i < iter; i++) {
+<<<<<<< HEAD
 			int type = rand() % 15;
 			//string name = "images/빵/bread" + to_string(type) + ".png";
 			auto bread = Object::create("images/빵/" + product[type].name + ".png", scene_game, 130 + i * 150, 200, true);
 			bread_image->push_back(bread);
 			bread_price->push_back(product[type].price);
 			//bread_price->push_back(getPrice(type));
+=======
+			int type = rand() % 25;
+			auto bread = Object::create("images/빵/" + product[type].name+ ".png" , scene_game, 130 + i * 150, 200, true);
+			bread_image->push_back(bread);
+			bread_price->push_back(product[type].price);
+>>>>>>> e9cb5263e0980d0e3c9c21fa63db7474ad1b965e
 		}
 
 		for (int i = 0; i < iter; i++) {
@@ -223,10 +266,45 @@ int main() {
 		return true;
 		});
 
+<<<<<<< HEAD
+=======
 
 	/*scene_game*/
 
 	auto menu_button = Object::create("images/메뉴확인.png", scene_game, 1150, 100);
+
+	menu_button ->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
+		scene_menu->enter();
+		return true;
+		});
+
+	auto up_for_5000 = Object::create("images/up_button.png", scene_game, 932, 273);
+	auto down_for_5000 = Object::create("images/down_button.png", scene_game, 932, 238);
+	auto up_for_1000 = Object::create("images/up_button.png", scene_game, 984, 273);
+	auto down_for_1000 = Object::create("images/down_button.png", scene_game, 984, 238, true);
+	auto up_for_500 = Object::create("images/up_button.png", scene_game, 1036, 273);
+	auto down_for_500 = Object::create("images/down_button.png", scene_game, 1036, 238, true);
+	auto up_for_100 = Object::create("images/up_button.png", scene_game, 1088, 273, true);
+	auto down_for_100 = Object::create("images/down_button.png", scene_game, 1088, 238, true);
+	auto done = Object::create("images/done.png", scene_game, 1040, 210);
+	auto reset = Object::create("images/reset.png", scene_game, 930, 210);
+>>>>>>> e9cb5263e0980d0e3c9c21fa63db7474ad1b965e
+
+	/*scene_game*/
+
+<<<<<<< HEAD
+	auto menu_button = Object::create("images/메뉴확인.png", scene_game, 1150, 100);
+=======
+	done->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
+		if (change == cash - total) {
+			std::cout << "bingo" << endl;
+		}
+		else {
+			std::cout << "wrong" << endl;
+			std::cout << "your computation: " << change << endl;
+			std::cout << "the right answer: " << total - cash << endl;
+		}
+>>>>>>> e9cb5263e0980d0e3c9c21fa63db7474ad1b965e
 
 	menu_button->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
 		scene_menu->enter();
@@ -244,6 +322,7 @@ int main() {
 	auto done = Object::create("images/done.png", scene_game, 1040, 210);
 	auto reset = Object::create("images/reset.png", scene_game, 930, 210);
 
+<<<<<<< HEAD
 
 	done->setOnMouseCallback([&](ObjectPtr object, int x, int y, MouseAction action)->bool {
 		if (loop_easy > 0 || loop_medi > 0 || loop_hard > 0) {
@@ -298,6 +377,22 @@ int main() {
 			loop_medi = 20;
 			loop_hard = 30;
 			endGame();
+=======
+		/*빵 오브젝트, 가격 저장*/
+		vector <int> bread_price[3];
+		const int iter = rand() % 3 + 1;
+		std::cout << "iter: " << iter << endl;
+		for (int i = 0; i < iter; i++) {
+			int type = rand() % 25;
+			auto bread = Object::create("images/빵/" + product[type].name + ".png", scene_game, 130 + i * 150, 200, true);
+			bread_image->push_back(bread);
+			bread_price->push_back(product[type].price);
+		}
+
+		for (int i = 0; i < iter; i++) {
+			total += bread_price->back();
+			bread_price->pop_back();
+>>>>>>> e9cb5263e0980d0e3c9c21fa63db7474ad1b965e
 		}
 		return true;
 		});
@@ -342,9 +437,18 @@ int main() {
 		showingStatus(change);
 		return true;
 		});
+<<<<<<< HEAD
 
 
 
 	startGame(scene_main);
 	return 0;
 }
+=======
+
+
+
+	startGame(scene_main);
+	return 0;
+}
+>>>>>>> e9cb5263e0980d0e3c9c21fa63db7474ad1b965e
