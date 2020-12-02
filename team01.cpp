@@ -4,6 +4,12 @@
 using namespace bangtal;
 using namespace std;
 
+struct Product {
+
+	string name;
+	int price;
+};
+
 
 void pick_client(ObjectPtr object) {
 	int type = rand() % 6 + 1;
@@ -53,6 +59,39 @@ void showingStatus(int num) {
 
 
 int main() {
+
+	 struct Product product[25]{
+
+		{"bread0", 1600},
+		{"bread1", 1500},
+		{"bread2", 2000},
+		{"bread3", 2300},
+		{"bread4", 1800},
+		{"bread5", 2000},
+		{"bread6", 2900},
+		{"bread7", 2100},
+		{"bread8", 1200},
+		{"bread9", 2800},
+		{"bread10", 1400},
+		{"bread11", 4500},
+		{"bread12", 5500},
+		{"bread13", 6500},
+		{"bread14", 3500},
+		{"bread15", 5500},
+		{"bread16", 2000},
+		{"bread17", 6000},
+		{"bread18", 1800},
+		{"bread19", 2500},
+		{"bread20", 2500},
+		{"bread21", 1500},
+		{"bread22", 3000},
+		{"bread23", 2000},
+		{"bread24", 2000}
+
+
+	};
+	
+
 	setGameOption(GameOption::GAME_OPTION_INVENTORY_BUTTON, false);
 	setGameOption(GameOption::GAME_OPTION_ROOM_TITLE, false);
 
@@ -143,6 +182,7 @@ int main() {
 	int cash = 0; //손님이 내는 돈
 	int change = 0; //거스름돈
 	int total = 0; //내야하는 돈(빵 값)
+
 	vector <int> bread_price[3];
 	vector <ObjectPtr> bread_image[3];
 
@@ -156,13 +196,13 @@ int main() {
 		//빵개수 랜덤
 		const int iter = rand() % 3 + 1;
 
+
 		//빵 15개 종류 중 랜덤하게 받은 개수만큼 vector에 넣어줌
 		for (int i = 0; i < iter; i++) {
-			int type = rand() % 15;
-			string name = "images/빵/bread" + to_string(type) + ".png";
-			auto bread = Object::create(name, scene_game, 130 + i * 150, 200, true);
+			int type = rand() % 25;
+			auto bread = Object::create("images/빵/" + product[type].name+ ".png" , scene_game, 130 + i * 150, 200, true);
 			bread_image->push_back(bread);
-			bread_price->push_back(getPrice(type));
+			bread_price->push_back(product[type].price);
 		}
 
 		for (int i = 0; i < iter; i++) {
