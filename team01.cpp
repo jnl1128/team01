@@ -51,51 +51,6 @@ void showingStatus(int num) {
 }
 
 
-class Up : public Object
-{
-protected:
-	ObjectPtr temp;
-	Up(const string& image, ScenePtr scene, int x, int y, bool shown, ObjectPtr linked_object) : Object(image, scene, x, y, shown) {
-		temp = linked_object;
-	}
-
-public:
-	static ObjectPtr create(const string& image, ScenePtr scene = nullptr, int x = 0, int y = 0, bool shown = true, ObjectPtr linked_object = nullptr) {
-		auto object = ObjectPtr(new Up(image, scene, x, y, shown, linked_object));
-		Object::add(object);
-		return object;
-	}
-	virtual bool onMouse(int x, int y, MouseAction action, ObjectPtr linked_object) {
-
-		return true;
-	}
-
-};
-
-
-class Down : public Object
-{
-protected:
-	ObjectPtr temp;
-	Down(const string& image, ScenePtr scene, int x, int y, bool shown, ObjectPtr linked_object) : Object(image, scene, x, y, shown) {
-		temp = linked_object;
-	}
-
-public:
-	static ObjectPtr create(const string& image, ScenePtr scene = nullptr, int x = 0, int y = 0, bool shown = true, ObjectPtr linked_object = nullptr) {
-		auto object = ObjectPtr(new Down(image, scene, x, y, shown, linked_object));
-		Object::add(object);
-		return object;
-	}
-
-	virtual bool onMouse(int x, int y, MouseAction action, ObjectPtr linked_object) {
-
-		return true;
-
-	}
-
-};
-
 
 int main() {
 	setGameOption(GameOption::GAME_OPTION_INVENTORY_BUTTON, false);
